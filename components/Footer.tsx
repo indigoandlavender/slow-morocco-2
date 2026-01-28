@@ -251,6 +251,7 @@ export default function Footer() {
                     <li><Link href="/plan-your-trip" className="text-sm text-white/60 hover:text-white transition-colors">Plan Your Trip</Link></li>
                     <li><Link href="/faq" className="text-sm text-white/60 hover:text-white transition-colors">FAQ</Link></li>
                     <li><Link href="/whats-included" className="text-sm text-white/60 hover:text-white transition-colors">What's Included</Link></li>
+                    <li><Link href="/glossary" className="text-sm text-white/60 hover:text-white transition-colors">Glossary</Link></li>
                   </ul>
                 </div>
                 <div>
