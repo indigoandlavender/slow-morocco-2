@@ -8,6 +8,7 @@ interface PricingEUR {
   transfers: { label: string; amount: number };
   room: { label: string; amount: number };
   camel: { label: string; amount: number };
+  coordination: { label: string; amount: number };
 }
 
 interface OvernightBookingModalProps {
@@ -603,19 +604,7 @@ export default function OvernightBookingModal({
                   
                   <div className="space-y-2 pt-4 border-t border-foreground/10">
                     <div className="flex justify-between text-sm">
-                      <span className="text-foreground/50">{pricingEUR.transfers.label}</span>
-                      <span>€{pricingEUR.transfers.amount}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-foreground/50">{pricingEUR.room.label}</span>
-                      <span>€{pricingEUR.room.amount}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-foreground/50">{pricingEUR.camel.label}</span>
-                      <span>€{pricingEUR.camel.amount}</span>
-                    </div>
-                    <div className="flex justify-between text-sm pt-2 border-t border-foreground/10">
-                      <span className="text-foreground/50">Subtotal</span>
+                      <span className="text-foreground/50">Private experience for 2</span>
                       <span>€{subtotalEUR}</span>
                     </div>
                     <div className="flex justify-between text-sm">
