@@ -241,14 +241,20 @@ export default function AgafayOvernightPage() {
       <section className="py-16 md:py-20 border-t border-border">
         <div className="container mx-auto px-6 lg:px-16">
           <h2 className="font-serif text-2xl text-center mb-12">
-            Other Experiences
+            Explore More
           </h2>
-          <div className="text-center">
+          <div className="flex justify-center gap-4 flex-wrap">
             <Link
-              href="/day-trips"
+              href="/journeys"
               className="inline-block border border-foreground px-8 py-3 text-xs tracking-[0.15em] uppercase hover:bg-foreground hover:text-background transition-colors"
             >
-              View All Day Tours
+              View All Journeys
+            </Link>
+            <Link
+              href="/day-trips"
+              className="inline-block border border-foreground/30 px-8 py-3 text-xs tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground hover:text-foreground transition-colors"
+            >
+              Day Tours
             </Link>
           </div>
         </div>
