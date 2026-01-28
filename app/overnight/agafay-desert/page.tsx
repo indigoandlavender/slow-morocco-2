@@ -73,14 +73,14 @@ export default function AgafayOvernightPage() {
           {/* Back Link */}
           <Link
             href="/day-trips"
-            className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors mb-10"
+            className="inline-flex items-center gap-2 text-xs tracking-[0.15em] uppercase text-foreground/70 hover:text-foreground transition-colors mb-10"
           >
             <ArrowLeft className="w-4 h-4" />
             All Experiences
           </Link>
 
           {/* Meta */}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground mb-10">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/70 mb-10">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               <span>2 Days / 1 Night</span>
@@ -96,7 +96,7 @@ export default function AgafayOvernightPage() {
           </div>
 
           {/* Intro */}
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-16 font-display italic">
+          <p className="text-lg md:text-xl text-foreground leading-relaxed mb-16 font-display italic">
             One night in the stone desert. Sunset camel ride, dinner under the sky, silence you can feel.
           </p>
 
@@ -108,9 +108,9 @@ export default function AgafayOvernightPage() {
                 Day One
               </p>
               <h2 className="font-serif text-2xl mb-4">Into the Stone Desert</h2>
-              <div className="text-muted-foreground space-y-4">
+              <div className="text-foreground space-y-4">
                 <p>
-                  <strong className="text-foreground">2:00 PM</strong> — Pickup from your riad in Marrakech. The drive south takes you past the last palm groves, through villages of red earth, until the landscape opens into something older—the Agafay plateau, where rocky desert meets the distant High Atlas.
+                  <strong>2:00 PM</strong> — Pickup from your riad in Marrakech. The drive south takes you past the last palm groves, through villages of red earth, until the landscape opens into something older—the Agafay plateau, where rocky desert meets the distant High Atlas.
                 </p>
                 <p>
                   Arrive at Scarabeo Stone Camp as the light softens. Settle into your suite, then join your camel for a sunset ride across the desert floor. Return to camp for dinner: Moroccan salads, tagines, the chef's trio—served under a canopy of stars.
@@ -124,12 +124,12 @@ export default function AgafayOvernightPage() {
                 Day Two
               </p>
               <h2 className="font-serif text-2xl mb-4">Morning Light</h2>
-              <div className="text-muted-foreground space-y-4">
+              <div className="text-foreground space-y-4">
                 <p>
                   Wake to the silence of the desert. Breakfast on the terrace—fresh bread, honey, eggs, fruit—with the Atlas Mountains catching the morning sun. Take your time. The desert doesn't rush.
                 </p>
                 <p>
-                  <strong className="text-foreground">12:00 PM</strong> — Transfer back to Marrakech, arriving early afternoon.
+                  <strong>12:00 PM</strong> — Transfer back to Marrakech, arriving early afternoon.
                 </p>
               </div>
             </div>
@@ -141,11 +141,11 @@ export default function AgafayOvernightPage() {
           {/* Accommodation */}
           <div className="bg-sand p-8 mb-12">
             <h3 className="font-serif text-xl mb-2">Scarabeo Stone Camp</h3>
-            <p className="text-sm text-muted-foreground mb-4">Suite · Half-Board</p>
-            <p className="text-muted-foreground">
+            <p className="text-sm text-foreground/70 mb-4">Suite · Half-Board</p>
+            <p className="text-foreground">
               A camp of stone and canvas set into the Agafay plateau. Private suite with double bed, en-suite bathroom, and terrace facing the Atlas. Dinner and breakfast included.
             </p>
-            <p className="text-sm text-muted-foreground mt-4 italic">
+            <p className="text-sm text-foreground/70 mt-4 italic">
               We usually book Scarabeo Stone Camp, subject to availability. If unavailable, a similar camp will be proposed.
             </p>
           </div>
@@ -153,7 +153,7 @@ export default function AgafayOvernightPage() {
           {/* What's Included */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div>
-              <h3 className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-4">
+              <h3 className="text-xs tracking-[0.15em] uppercase text-foreground/70 mb-4">
                 Included
               </h3>
               <ul className="space-y-2">
@@ -164,7 +164,7 @@ export default function AgafayOvernightPage() {
                   "Sunset camel ride with handler",
                   "Private transfer back to Marrakech",
                 ].map((item, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm">
+                  <li key={index} className="flex items-start gap-2 text-sm text-foreground">
                     <span className="text-foreground/50 mt-0.5">→</span>
                     <span>{item}</span>
                   </li>
@@ -173,7 +173,7 @@ export default function AgafayOvernightPage() {
             </div>
 
             <div>
-              <h3 className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-4">
+              <h3 className="text-xs tracking-[0.15em] uppercase text-foreground/70 mb-4">
                 Not Included
               </h3>
               <ul className="space-y-2">
@@ -183,7 +183,7 @@ export default function AgafayOvernightPage() {
                   "Tips",
                   "Additional activities",
                 ].map((item, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <li key={index} className="flex items-start gap-2 text-sm text-foreground/70">
                     <span className="mt-0.5">–</span>
                     <span>{item}</span>
                   </li>
@@ -218,7 +218,7 @@ export default function AgafayOvernightPage() {
             >
               Reserve This Experience
             </button>
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="text-sm text-foreground/70 mt-4">
               or <Link href="/contact" className="underline hover:text-foreground">send us a note</Link>
             </p>
           </div>
