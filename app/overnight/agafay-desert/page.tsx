@@ -193,19 +193,19 @@ export default function AgafayOvernightPage() {
           </div>
 
           {/* Pricing */}
-          <div className="bg-foreground text-background p-8 md:p-10 mb-12 text-center">
-            <p className="text-xs tracking-[0.2em] uppercase opacity-50 mb-4">
+          <div className="bg-[#d4cdc4] p-8 md:p-10 mb-12 text-center">
+            <p className="text-xs tracking-[0.2em] uppercase text-foreground/60 mb-4">
               Private Experience for Two
             </p>
 
             {totalEUR ? (
               <>
-                <p className="text-4xl md:text-5xl font-serif mb-2">€{totalEUR}</p>
-                <p className="text-sm opacity-50">All-inclusive · Transfers · Accommodation · Camel ride</p>
+                <p className="text-4xl md:text-5xl font-serif text-foreground mb-2">€{totalEUR}</p>
+                <p className="text-sm text-foreground/60">All-inclusive · Transfers · Accommodation · Camel ride</p>
               </>
             ) : (
               <div className="flex justify-center py-4">
-                <div className="w-6 h-6 border border-white/20 border-t-white/60 rounded-full animate-spin" />
+                <div className="w-6 h-6 border border-foreground/20 border-t-foreground/60 rounded-full animate-spin" />
               </div>
             )}
           </div>
