@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowLeft, Clock, MapPin, Moon } from "lucide-react";
+import PageBanner from "@/components/PageBanner";
 import OvernightBookingModal from "@/components/OvernightBookingModal";
 
 export default function AgafayOvernightPage() {
@@ -21,31 +21,15 @@ export default function AgafayOvernightPage() {
 
   return (
     <div className="bg-background min-h-screen">
-      {/* Hero Image */}
-      <section className="relative h-[50vh] md:h-[65vh] bg-[#e8e0d4]">
-        <Image
-          src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=2000"
-          alt="Agafay Desert at sunset"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
-        
-        {/* Category badge */}
-        <div className="absolute top-24 left-6 md:left-16">
-          <span className="text-xs tracking-[0.15em] uppercase bg-background/90 px-4 py-2">
-            Overnight Experience
-          </span>
-        </div>
-
-        {/* Title overlay */}
-        <div className="absolute bottom-12 left-6 md:left-16 right-6 md:right-16">
-          <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-white leading-tight">
-            Agafay Desert<br />Under the Stars
-          </h1>
-        </div>
-      </section>
+      {/* Hero Banner from Sheet */}
+      <PageBanner
+        slug="overnight/agafay-desert"
+        fallback={{
+          title: "Agafay Desert Under the Stars",
+          subtitle: "One night in the stone desert. Sunset camel ride, dinner under the sky, silence you can feel.",
+          label: "Overnight Experience",
+        }}
+      />
 
       {/* Content */}
       <section className="py-12 md:py-16">
