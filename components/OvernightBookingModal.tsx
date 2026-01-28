@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
-interface Pricing {
+interface PricingEUR {
   transfers: { label: string; amount: number };
   room: { label: string; amount: number };
   camel: { label: string; amount: number };
@@ -14,8 +14,8 @@ interface OvernightBookingModalProps {
   isOpen: boolean;
   onClose: () => void;
   experienceTitle: string;
-  pricing: Pricing;
-  totalMAD: number;
+  pricingEUR: PricingEUR;
+  totalEUR: number;
 }
 
 declare global {
@@ -288,8 +288,8 @@ export default function OvernightBookingModal({
   isOpen,
   onClose,
   experienceTitle,
-  pricing,
-  totalMAD,
+  pricingEUR,
+  totalEUR,
 }: OvernightBookingModalProps) {
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState(1);
@@ -343,11 +343,10 @@ export default function OvernightBookingModal({
 
   // Calculate totals with 2.5% handling fee
   const HANDLING_FEE_PERCENT = 2.5;
-  const EUR_RATE = 11; // Approximate MAD to EUR
   
-  const subtotalEUR = Math.round(totalMAD / EUR_RATE);
+  const subtotalEUR = totalEUR;
   const handlingFeeEUR = Math.round(subtotalEUR * HANDLING_FEE_PERCENT) / 100;
-  const totalEUR = subtotalEUR + handlingFeeEUR;
+  const grandTotalEUR = subtotalEUR + handlingFeeEUR;
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
@@ -381,8 +380,7 @@ export default function OvernightBookingModal({
             notes,
             subtotalEUR,
             handlingFeeEUR,
-            totalEUR,
-            totalMAD,
+            totalEUR: grandTotalEUR,
             transactionId,
           }),
         });
@@ -405,7 +403,7 @@ export default function OvernightBookingModal({
 
       setIsSubmitting(false);
     },
-    [experienceTitle, tripDate, guestName, guestEmail, guestPhone, pickupLocation, notes, subtotalEUR, handlingFeeEUR, totalEUR, totalMAD]
+    [experienceTitle, tripDate, guestName, guestEmail, guestPhone, pickupLocation, notes, subtotalEUR, handlingFeeEUR, grandTotalEUR]
   );
 
   const handlePaymentError = useCallback((err: any) => {
@@ -605,16 +603,16 @@ export default function OvernightBookingModal({
                   
                   <div className="space-y-2 pt-4 border-t border-foreground/10">
                     <div className="flex justify-between text-sm">
-                      <span className="text-foreground/50">{pricing.transfers.label}</span>
-                      <span>€{Math.round(pricing.transfers.amount / EUR_RATE)}</span>
+                      <span className="text-foreground/50">{pricingEUR.transfers.label}</span>
+                      <span>€{pricingEUR.transfers.amount}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-foreground/50">{pricing.room.label}</span>
-                      <span>€{Math.round(pricing.room.amount / EUR_RATE)}</span>
+                      <span className="text-foreground/50">{pricingEUR.room.label}</span>
+                      <span>€{pricingEUR.room.amount}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-foreground/50">{pricing.camel.label}</span>
-                      <span>€{Math.round(pricing.camel.amount / EUR_RATE)}</span>
+                      <span className="text-foreground/50">{pricingEUR.camel.label}</span>
+                      <span>€{pricingEUR.camel.amount}</span>
                     </div>
                     <div className="flex justify-between text-sm pt-2 border-t border-foreground/10">
                       <span className="text-foreground/50">Subtotal</span>
@@ -626,14 +624,14 @@ export default function OvernightBookingModal({
                     </div>
                     <div className="flex justify-between text-base pt-3 border-t border-foreground/10 mt-3">
                       <span className="font-medium">Total</span>
-                      <span className="font-serif text-xl">€{totalEUR.toFixed(2)}</span>
+                      <span className="font-serif text-xl">€{grandTotalEUR.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* PayPal Button */}
                 <PayPalButton
-                  amount={totalEUR.toFixed(2)}
+                  amount={grandTotalEUR.toFixed(2)}
                   description={`${experienceTitle} - ${formatDate(tripDate)}`}
                   onSuccess={handlePaymentSuccess}
                   onError={handlePaymentError}
