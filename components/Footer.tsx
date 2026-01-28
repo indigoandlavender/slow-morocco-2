@@ -124,6 +124,7 @@ export default function Footer() {
     { label: "Terms", href: "/terms" },
     { label: "Privacy", href: "/privacy" },
     { label: "Cancellation", href: "/cancellation-policy" },
+    { label: "Glossary", href: "/glossary" },
   ];
   const copyright = footerData?.copyright || {
     year: new Date().getFullYear(),
