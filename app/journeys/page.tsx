@@ -100,7 +100,7 @@ export default function JourneysPage() {
           type: 'overnight',
           slug: 'agafay-desert',
           title: 'Agafay Desert Overnight',
-          description: 'One night in the stone desert. Sunset camel ride, dinner under the sky, silence you can feel.',
+          description: 'One night in the hammada—the stone desert. Sunset camel ride, dinner under the sky, silence you can feel.',
           heroImage: 'https://res.cloudinary.com/drstfu5yr/image/upload/v1769611923/agafay-desert_sp7d6n.jpg',
           price: 450,
           durationDays: 2,

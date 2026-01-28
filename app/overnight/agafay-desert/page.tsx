@@ -110,7 +110,7 @@ export default function AgafayOvernightPage() {
               <h2 className="font-serif text-2xl mb-4">Into the Stone Desert</h2>
               <div className="text-foreground space-y-4">
                 <p>
-                  <strong>2:00 PM</strong> — Pickup from your riad in Marrakech. The drive south takes you past the last palm groves, through villages of red earth, until the landscape opens into something older—the Agafay plateau, where rocky desert meets the distant High Atlas.
+                  <strong>2:00 PM</strong> — Pickup from your riad in Marrakech. The drive south takes you past the last palm groves, through villages of red earth, until the landscape opens into something older—the Agafay plateau. This is a hammada, a stone desert. No golden dunes here, just ochre rock and silence stretching to the Atlas.
                 </p>
                 <p>
                   Arrive at your desert camp as the light softens. Settle into your suite, then join your camel for a sunset ride across the desert floor. Return to camp for dinner: Moroccan salads, tagines, the chef's trio—served under a canopy of stars.
