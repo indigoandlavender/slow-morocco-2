@@ -235,7 +235,7 @@ export default function AgafayRouteMap({ className = '' }: RouteMapProps) {
         className="w-full h-[300px] md:h-[350px]"
         style={{ backgroundColor: '#e8e0d4' }}
       />
-      <div className="flex justify-between items-center mt-4 px-2 text-xs text-foreground/40">
+      <div className="flex justify-between items-center mt-4 px-2 text-xs text-foreground/70">
         <span>40 minutes from Marrakech</span>
         <span>Stone desert plateau</span>
       </div>
