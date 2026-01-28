@@ -153,7 +153,7 @@ function Calendar({
       </div>
 
       <p className="text-[10px] text-foreground/40 mt-4">
-        Minimum 72 hours notice required for overnight bookings
+        Reserve well in advance — Agafay camps book quickly.
       </p>
     </div>
   );
