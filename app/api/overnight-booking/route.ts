@@ -16,7 +16,6 @@ export async function POST(request: Request) {
       subtotalEUR,
       handlingFeeEUR,
       totalEUR,
-      totalMAD,
       transactionId,
     } = body;
 
@@ -36,7 +35,6 @@ export async function POST(request: Request) {
       guestPhone || "",
       pickupLocation,
       notes || "",
-      totalMAD,
       subtotalEUR,
       handlingFeeEUR,
       totalEUR,

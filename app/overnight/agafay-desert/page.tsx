@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Clock, MapPin, Moon } from "lucide-react";
 import PageBanner from "@/components/PageBanner";
@@ -8,16 +8,47 @@ import OvernightBookingModal from "@/components/OvernightBookingModal";
 
 export default function AgafayOvernightPage() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [eurRate, setEurRate] = useState<number | null>(null);
 
-  // Pricing breakdown
-  const pricing = {
+  // Fetch real-time exchange rate
+  useEffect(() => {
+    fetch("https://api.exchangerate-api.com/v4/latest/MAD")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.rates?.EUR) {
+          setEurRate(data.rates.EUR);
+        }
+      })
+      .catch((err) => {
+        console.error("Exchange rate fetch error:", err);
+        // Fallback rate if API fails
+        setEurRate(0.091); // ~1 EUR = 11 MAD
+      });
+  }, []);
+
+  // Pricing breakdown in MAD
+  const pricingMAD = {
     transfers: { label: "Private transfers (550 × 2 ways)", amount: 1100 },
     room: { label: "Suite for 2, half-board", amount: 2650 },
     camel: { label: "Sunset camel ride (300 × 2)", amount: 600 },
   };
 
-  const totalMAD = pricing.transfers.amount + pricing.room.amount + pricing.camel.amount;
-  const totalEUR = Math.round(totalMAD / 11); // Approximate conversion
+  const totalMAD = pricingMAD.transfers.amount + pricingMAD.room.amount + pricingMAD.camel.amount;
+  
+  // Convert to EUR using real-time rate
+  const toEUR = (mad: number) => {
+    if (!eurRate) return null;
+    return Math.round(mad * eurRate);
+  };
+
+  const totalEUR = toEUR(totalMAD);
+
+  // Pricing for modal (in EUR)
+  const pricingEUR = eurRate ? {
+    transfers: { label: "Private transfers", amount: toEUR(pricingMAD.transfers.amount) || 0 },
+    room: { label: "Suite for 2, half-board", amount: toEUR(pricingMAD.room.amount) || 0 },
+    camel: { label: "Sunset camel ride (× 2)", amount: toEUR(pricingMAD.camel.amount) || 0 },
+  } : null;
 
   return (
     <div className="bg-background min-h-screen">
@@ -159,28 +190,36 @@ export default function AgafayOvernightPage() {
               Investment
             </p>
 
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                <span className="opacity-70">{pricing.transfers.label}</span>
-                <span>{pricing.transfers.amount.toLocaleString()} MAD</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                <span className="opacity-70">{pricing.room.label}</span>
-                <span>{pricing.room.amount.toLocaleString()} MAD</span>
-              </div>
-              <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                <span className="opacity-70">{pricing.camel.label}</span>
-                <span>{pricing.camel.amount.toLocaleString()} MAD</span>
-              </div>
-            </div>
+            {eurRate ? (
+              <>
+                <div className="space-y-4 mb-6">
+                  <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                    <span className="opacity-70">Private transfers</span>
+                    <span>€{toEUR(pricingMAD.transfers.amount)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                    <span className="opacity-70">Suite for 2, half-board</span>
+                    <span>€{toEUR(pricingMAD.room.amount)}</span>
+                  </div>
+                  <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                    <span className="opacity-70">Sunset camel ride (× 2)</span>
+                    <span>€{toEUR(pricingMAD.camel.amount)}</span>
+                  </div>
+                </div>
 
-            <div className="flex justify-between items-baseline pt-4 border-t border-white/20">
-              <span className="text-xs tracking-[0.15em] uppercase opacity-50">Starting from</span>
-              <div className="text-right">
-                <p className="text-3xl font-serif">{totalMAD.toLocaleString()} MAD</p>
-                <p className="text-sm opacity-50">~€{totalEUR} for 2 guests</p>
+                <div className="flex justify-between items-baseline pt-4 border-t border-white/20">
+                  <span className="text-xs tracking-[0.15em] uppercase opacity-50">Starting from</span>
+                  <div className="text-right">
+                    <p className="text-3xl font-serif">€{totalEUR}</p>
+                    <p className="text-sm opacity-50">for 2 guests</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex justify-center py-8">
+                <div className="w-6 h-6 border border-white/20 border-t-white/60 rounded-full animate-spin" />
               </div>
-            </div>
+            )}
           </div>
 
           {/* Booking CTA */}
@@ -216,13 +255,15 @@ export default function AgafayOvernightPage() {
       </section>
 
       {/* Booking Modal */}
-      <OvernightBookingModal
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-        experienceTitle="Agafay Desert Overnight"
-        pricing={pricing}
-        totalMAD={totalMAD}
-      />
+      {pricingEUR && totalEUR && (
+        <OvernightBookingModal
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          experienceTitle="Agafay Desert Overnight"
+          pricingEUR={pricingEUR}
+          totalEUR={totalEUR}
+        />
+      )}
     </div>
   );
 }
