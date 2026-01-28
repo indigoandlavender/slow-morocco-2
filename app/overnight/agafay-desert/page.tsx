@@ -113,7 +113,7 @@ export default function AgafayOvernightPage() {
                   <strong>2:00 PM</strong> — Pickup from your riad in Marrakech. The drive south takes you past the last palm groves, through villages of red earth, until the landscape opens into something older—the Agafay plateau, where rocky desert meets the distant High Atlas.
                 </p>
                 <p>
-                  Arrive at Scarabeo Stone Camp as the light softens. Settle into your suite, then join your camel for a sunset ride across the desert floor. Return to camp for dinner: Moroccan salads, tagines, the chef's trio—served under a canopy of stars.
+                  Arrive at your desert camp as the light softens. Settle into your suite, then join your camel for a sunset ride across the desert floor. Return to camp for dinner: Moroccan salads, tagines, the chef's trio—served under a canopy of stars.
                 </p>
               </div>
             </div>
@@ -140,13 +140,13 @@ export default function AgafayOvernightPage() {
 
           {/* Accommodation */}
           <div className="bg-sand p-8 mb-12">
-            <h3 className="font-serif text-xl mb-2">Scarabeo Stone Camp</h3>
+            <h3 className="font-serif text-xl mb-2">Desert Stone Camp</h3>
             <p className="text-sm text-foreground/70 mb-4">Suite · Half-Board</p>
             <p className="text-foreground">
               A camp of stone and canvas set into the Agafay plateau. Private suite with double bed, en-suite bathroom, and terrace facing the Atlas. Dinner and breakfast included.
             </p>
             <p className="text-sm text-foreground/70 mt-4 italic">
-              We usually book Scarabeo Stone Camp, subject to availability. If unavailable, a similar camp will be proposed.
+              We work with select luxury camps in Agafay, subject to availability.
             </p>
           </div>
 
@@ -159,7 +159,7 @@ export default function AgafayOvernightPage() {
               <ul className="space-y-2">
                 {[
                   "Private transfer from Marrakech",
-                  "One night at Scarabeo Stone Camp",
+                  "One night at a luxury desert camp",
                   "Dinner + breakfast (half-board)",
                   "Sunset camel ride with handler",
                   "Private transfer back to Marrakech",
