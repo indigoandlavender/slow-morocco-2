@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, MapPin, Moon } from "lucide-react";
 import PageBanner from "@/components/PageBanner";
 import OvernightBookingModal from "@/components/OvernightBookingModal";
+import AgafayRouteMap from "@/components/AgafayRouteMap";
 
 export default function AgafayOvernightPage() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -35,19 +36,23 @@ export default function AgafayOvernightPage() {
 
   const totalMAD = pricingMAD.transfers.amount + pricingMAD.room.amount + pricingMAD.camel.amount;
   
-  // Convert to EUR using real-time rate
+  // Convert to EUR using real-time rate + coordination fee
+  const COORDINATION_FEE = 50;
+  
   const toEUR = (mad: number) => {
     if (!eurRate) return null;
     return Math.round(mad * eurRate);
   };
 
-  const totalEUR = toEUR(totalMAD);
+  const baseEUR = toEUR(totalMAD);
+  const totalEUR = baseEUR ? baseEUR + COORDINATION_FEE : null;
 
   // Pricing for modal (in EUR)
-  const pricingEUR = eurRate ? {
+  const pricingEUR = eurRate && baseEUR ? {
     transfers: { label: "Private transfers", amount: toEUR(pricingMAD.transfers.amount) || 0 },
     room: { label: "Suite for 2, half-board", amount: toEUR(pricingMAD.room.amount) || 0 },
     camel: { label: "Sunset camel ride (× 2)", amount: toEUR(pricingMAD.camel.amount) || 0 },
+    coordination: { label: "Concierge service", amount: COORDINATION_FEE },
   } : null;
 
   return (
@@ -96,7 +101,7 @@ export default function AgafayOvernightPage() {
           </p>
 
           {/* Itinerary */}
-          <div className="space-y-12 mb-16">
+          <div className="space-y-12 mb-12">
             {/* Day 1 */}
             <div>
               <p className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground mb-2">
@@ -129,6 +134,9 @@ export default function AgafayOvernightPage() {
               </div>
             </div>
           </div>
+
+          {/* Route Map */}
+          <AgafayRouteMap className="mb-16" />
 
           {/* Accommodation */}
           <div className="bg-sand p-8 mb-12">
@@ -184,39 +192,19 @@ export default function AgafayOvernightPage() {
             </div>
           </div>
 
-          {/* Pricing Breakdown */}
-          <div className="bg-foreground text-background p-8 md:p-10 mb-12">
-            <p className="text-xs tracking-[0.2em] uppercase opacity-50 mb-6">
-              Investment
+          {/* Pricing */}
+          <div className="bg-foreground text-background p-8 md:p-10 mb-12 text-center">
+            <p className="text-xs tracking-[0.2em] uppercase opacity-50 mb-4">
+              Private Experience for Two
             </p>
 
-            {eurRate ? (
+            {totalEUR ? (
               <>
-                <div className="space-y-4 mb-6">
-                  <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                    <span className="opacity-70">Private transfers</span>
-                    <span>€{toEUR(pricingMAD.transfers.amount)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                    <span className="opacity-70">Suite for 2, half-board</span>
-                    <span>€{toEUR(pricingMAD.room.amount)}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-3 border-b border-white/10">
-                    <span className="opacity-70">Sunset camel ride (× 2)</span>
-                    <span>€{toEUR(pricingMAD.camel.amount)}</span>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-baseline pt-4 border-t border-white/20">
-                  <span className="text-xs tracking-[0.15em] uppercase opacity-50">Starting from</span>
-                  <div className="text-right">
-                    <p className="text-3xl font-serif">€{totalEUR}</p>
-                    <p className="text-sm opacity-50">for 2 guests</p>
-                  </div>
-                </div>
+                <p className="text-4xl md:text-5xl font-serif mb-2">€{totalEUR}</p>
+                <p className="text-sm opacity-50">All-inclusive · Transfers · Accommodation · Camel ride</p>
               </>
             ) : (
-              <div className="flex justify-center py-8">
+              <div className="flex justify-center py-4">
                 <div className="w-6 h-6 border border-white/20 border-t-white/60 rounded-full animate-spin" />
               </div>
             )}
