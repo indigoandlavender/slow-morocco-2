@@ -107,7 +107,7 @@ export default function AgafayOvernightPage() {
               A camp of stone and canvas set into the Agafay plateau. Private suite with double bed, en-suite bathroom, and terrace facing the Atlas. Dinner and breakfast included.
             </p>
             <p className="text-sm text-muted-foreground mt-4 italic">
-              We usually book Scarabeo Stone Camp, subject to availability.
+              We usually book Scarabeo Stone Camp, subject to availability. If unavailable, a similar camp will be proposed.
             </p>
           </div>
 
