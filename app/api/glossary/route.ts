@@ -18,7 +18,6 @@ export async function GET(request: Request) {
     }
     return NextResponse.json({
       "@context": "https://schema.org",
-      "@type": "DefinedTerm",
       ...formatTermForAPI(found),
     });
   }
