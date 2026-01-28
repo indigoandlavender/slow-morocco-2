@@ -19,28 +19,34 @@ export default function AgafayRouteMap({ className = '' }: RouteMapProps) {
   const map = useRef<any>(null);
   const [mapError, setMapError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure client-side rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    if (map.current || !mapContainer.current) return;
-
-    // Load CSS first
-    if (!document.getElementById('mapbox-gl-css')) {
-      const link = document.createElement('link');
-      link.id = 'mapbox-gl-css';
-      link.rel = 'stylesheet';
-      link.href = 'https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css';
-      document.head.appendChild(link);
-    }
+    if (!mounted || map.current || !mapContainer.current) return;
 
     const initMap = async () => {
       try {
-        // Wait for CSS to load
-        await new Promise(resolve => setTimeout(resolve, 100));
-
         if (!mapboxgl) {
           const mb = await import('mapbox-gl');
           mapboxgl = mb.default;
           mapboxgl.accessToken = 'pk.eyJ1IjoiaW5kaWdvYW5kbGF2ZW5kZXIiLCJhIjoiY21kN3B0OTZvMGllNjJpcXY0MnZlZHVlciJ9.1-jV-Pze3d7HZseOAhmkCg';
+          
+          // Add CSS dynamically
+          if (!document.getElementById('mapbox-gl-css')) {
+            const link = document.createElement('link');
+            link.id = 'mapbox-gl-css';
+            link.rel = 'stylesheet';
+            link.href = 'https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css';
+            document.head.appendChild(link);
+            
+            // Wait for CSS to load
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
         }
 
         if (!mapContainer.current) return;
@@ -59,8 +65,11 @@ export default function AgafayRouteMap({ className = '' }: RouteMapProps) {
           pitch: 30,
         });
 
-        map.current.on('error', () => {
-          setMapError(true);
+        map.current.on('error', (e: any) => {
+          // Only set error for fatal initialization issues, not tile load failures
+          if (e.error?.message?.includes('Failed to initialize')) {
+            setMapError(true);
+          }
         });
 
         // Enable scroll zoom on click
@@ -212,20 +221,11 @@ export default function AgafayRouteMap({ className = '' }: RouteMapProps) {
 
     initMap();
 
-    // Timeout fallback - if map doesn't load in 5 seconds, show fallback
-    const timeout = setTimeout(() => {
-      if (!map.current) {
-        setMapError(true);
-        setIsLoading(false);
-      }
-    }, 5000);
-
     return () => {
-      clearTimeout(timeout);
       map.current?.remove();
       map.current = null;
     };
-  }, []);
+  }, [mounted]);
 
   if (mapError) {
     // Fallback: static map image or simple route display
