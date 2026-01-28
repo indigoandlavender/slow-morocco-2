@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, MapPin, Clock, Ticket } from "lucide-react";
+import { RelatedStoriesForPlace } from "@/components/RelatedContent";
 
 
 interface Place {
@@ -32,12 +33,24 @@ interface Journey {
   duration: number;
 }
 
+interface Story {
+  slug: string;
+  title: string;
+  subtitle?: string;
+  category?: string;
+  heroImage?: string;
+  excerpt?: string;
+  tags?: string;
+  readTime?: string;
+}
+
 export default function PlaceDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
   
   const [place, setPlace] = useState<Place | null>(null);
   const [relatedJourneys, setRelatedJourneys] = useState<Journey[]>([]);
+  const [relatedStories, setRelatedStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,6 +86,20 @@ export default function PlaceDetailPage() {
         setError("Failed to load place");
         setLoading(false);
       });
+  }, [slug]);
+
+  // Fetch related stories when place loads
+  useEffect(() => {
+    if (!slug) return;
+    
+    fetch(`/api/related?type=place&slug=${encodeURIComponent(slug)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setRelatedStories(data.stories || []);
+        }
+      })
+      .catch(console.error);
   }, [slug]);
 
   if (loading) {
@@ -318,6 +345,13 @@ export default function PlaceDetailPage() {
           </div>
         </section>
       )}
+
+      {/* Related Stories */}
+      <RelatedStoriesForPlace 
+        stories={relatedStories} 
+        placeName={place.title}
+        destination={place.destination}
+      />
 
       {/* Sources */}
       {place.sources && (

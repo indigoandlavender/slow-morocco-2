@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import dynamic from "next/dynamic";
+import { RelatedStoriesForJourney } from "@/components/RelatedContent";
 import {
   IconClock,
   IconCamel,
@@ -78,6 +79,17 @@ interface ItineraryDay {
   activities: string;
   meals: string;
   routeType: string;
+}
+
+interface Story {
+  slug: string;
+  title: string;
+  subtitle?: string;
+  category?: string;
+  heroImage?: string;
+  excerpt?: string;
+  tags?: string;
+  readTime?: string;
 }
 
 // Journeys Carousel Component
@@ -193,6 +205,7 @@ export default function JourneyDetailPage() {
   
   const [journey, setJourney] = useState<Journey | null>(null);
   const [itinerary, setItinerary] = useState<ItineraryDay[]>([]);
+  const [relatedStories, setRelatedStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -211,6 +224,20 @@ export default function JourneyDetailPage() {
         console.error(err);
         setLoading(false);
       });
+  }, [slug]);
+
+  // Fetch related stories when journey loads
+  useEffect(() => {
+    if (!slug) return;
+    
+    fetch(`/api/related?type=journey&slug=${encodeURIComponent(slug)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setRelatedStories(data.stories || []);
+        }
+      })
+      .catch(console.error);
   }, [slug]);
 
   if (loading) {
@@ -575,6 +602,12 @@ export default function JourneyDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* Related Stories */}
+      <RelatedStoriesForJourney 
+        stories={relatedStories} 
+        journeyTitle={journey.title}
+      />
 
       {/* More Journeys Carousel */}
       <section className="py-16 md:py-20 border-t border-border">

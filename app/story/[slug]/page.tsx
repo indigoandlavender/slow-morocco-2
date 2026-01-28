@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import StoryBody from "@/components/StoryBody";
+import { RelatedJourneysSection } from "@/components/RelatedContent";
 
 interface Story {
   slug: string;
@@ -33,6 +34,29 @@ interface StoryImage {
   caption?: string;
 }
 
+interface Journey {
+  slug: string;
+  title: string;
+  heroImage?: string;
+  shortDescription?: string;
+  arcDescription?: string;
+  description?: string;
+  durationDays?: number;
+  duration?: number;
+  price?: number;
+  focus?: string;
+  focusType?: string;
+}
+
+interface DayTrip {
+  slug: string;
+  title: string;
+  heroImage?: string;
+  shortDescription?: string;
+  durationHours?: number;
+  category?: string;
+}
+
 export default function StoryPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -40,6 +64,8 @@ export default function StoryPage() {
   const [story, setStory] = useState<Story | null>(null);
   const [images, setImages] = useState<StoryImage[]>([]);
   const [relatedStories, setRelatedStories] = useState<Story[]>([]);
+  const [relatedJourneys, setRelatedJourneys] = useState<Journey[]>([]);
+  const [relatedDayTrips, setRelatedDayTrips] = useState<DayTrip[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -91,6 +117,21 @@ export default function StoryPage() {
         setRelatedStories(related.slice(0, 3));
       });
   }, [story, slug]);
+
+  // Fetch related journeys and day trips when main story loads
+  useEffect(() => {
+    if (!story || !story.tags) return;
+    
+    fetch(`/api/related?type=story&tags=${encodeURIComponent(story.tags)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setRelatedJourneys(data.journeys || []);
+          setRelatedDayTrips(data.dayTrips || []);
+        }
+      })
+      .catch(console.error);
+  }, [story]);
 
   if (loading) {
     return (
@@ -512,6 +553,12 @@ export default function StoryPage() {
             </div>
           </>
         )}
+
+        {/* Related Journeys & Day Trips */}
+        <RelatedJourneysSection 
+          journeys={relatedJourneys} 
+          dayTrips={relatedDayTrips} 
+        />
 
         {/* Back Link */}
         <div className="mt-12">
