@@ -23,20 +23,24 @@ export default function AgafayRouteMap({ className = '' }: RouteMapProps) {
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
+    // Load CSS first
+    if (!document.getElementById('mapbox-gl-css')) {
+      const link = document.createElement('link');
+      link.id = 'mapbox-gl-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css';
+      document.head.appendChild(link);
+    }
+
     const initMap = async () => {
       try {
+        // Wait for CSS to load
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         if (!mapboxgl) {
           const mb = await import('mapbox-gl');
           mapboxgl = mb.default;
           mapboxgl.accessToken = 'pk.eyJ1IjoiaW5kaWdvYW5kbGF2ZW5kZXIiLCJhIjoiY21kN3B0OTZvMGllNjJpcXY0MnZlZHVlciJ9.1-jV-Pze3d7HZseOAhmkCg';
-          
-          if (!document.getElementById('mapbox-gl-css')) {
-            const link = document.createElement('link');
-            link.id = 'mapbox-gl-css';
-            link.rel = 'stylesheet';
-            link.href = 'https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css';
-            document.head.appendChild(link);
-          }
         }
 
         if (!mapContainer.current) return;
@@ -208,14 +212,48 @@ export default function AgafayRouteMap({ className = '' }: RouteMapProps) {
 
     initMap();
 
+    // Timeout fallback - if map doesn't load in 5 seconds, show fallback
+    const timeout = setTimeout(() => {
+      if (!map.current) {
+        setMapError(true);
+        setIsLoading(false);
+      }
+    }, 5000);
+
     return () => {
+      clearTimeout(timeout);
       map.current?.remove();
       map.current = null;
     };
   }, []);
 
   if (mapError) {
-    return null;
+    // Fallback: static map image or simple route display
+    return (
+      <div className={`relative ${className}`}>
+        <div 
+          className="w-full h-[300px] md:h-[350px] bg-sand flex items-center justify-center"
+        >
+          <div className="text-center px-8">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="text-center">
+                <div className="w-3 h-3 bg-foreground rounded-full mx-auto mb-2" />
+                <span className="text-xs tracking-[0.1em] uppercase">Marrakech</span>
+              </div>
+              <div className="flex-1 max-w-[120px] border-t-2 border-dashed border-foreground/30" />
+              <div className="text-center">
+                <div className="w-4 h-4 bg-[#8B2635] rounded-full mx-auto mb-2" />
+                <span className="text-xs tracking-[0.1em] uppercase font-medium">Agafay</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between items-center mt-4 px-2 text-xs text-foreground/70">
+          <span>40 minutes from Marrakech</span>
+          <span>Stone desert plateau</span>
+        </div>
+      </div>
+    );
   }
 
   return (
