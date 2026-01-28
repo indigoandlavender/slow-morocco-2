@@ -372,8 +372,9 @@ export default function JourneysPage() {
                     <p className="text-sm text-foreground/50 leading-relaxed line-clamp-2">
                       {item.description}
                     </p>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
